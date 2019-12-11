@@ -4,31 +4,31 @@ import java.net.URL;
 
 public class SiteScraper {
 	public static ArrayList<ReefFish> Scraper(String url) {
-		System.out.print("Enter url: ");
-		Scanner sc = new Scanner(System.in);
-		String addr = sc.nextLine();
+		ArrayList<ReefFish> result = new ArrayList<ReefFish>();
 		String line;
-		String excess = "";
 		String name = "";
 		ReefFish fish;
-		ArrayList<ReefFish> Fish = new ArrayList<ReefFish>();
 		try {
-			URL link = new URL(addr);
+			URL link = new URL(url);
 			Scanner linksc = new Scanner(link.openStream());
 			while (linksc.hasNextLine()) {
 				line = linksc.nextLine();
 				if (line.contains(",\"name\":")) {
+					if (line.contains("Stan & Debbie Hauter")) {
+						linksc.nextLine();
+					} else {
 					String parts[] = line.split(": ");
 					for (String part : parts) {
-						excess = parts[0];
 						name = parts[1];
+						name = name.replace("\"", "");
 					}
 					fish = new ReefFish(name);
-					Fish.add(fish);
+					result.add(fish);
+					}
 				}
 			}
 			linksc.close();
-			return Fish;
+			return result;
 		} catch (Exception ex) {
 			ex.printStackTrace();
 			System.out.println("Could not connect to the website specified.");

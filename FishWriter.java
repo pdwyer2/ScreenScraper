@@ -10,10 +10,10 @@ public class FishWriter {
 		}
 	}
 	
-	public static boolean writeFishToTextFile(String fname, ArrayList<ReefFish> fish) {
+	public static boolean writeFishToTextFile(File f, ArrayList<ReefFish> Fish) {
 		try {
-			PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(fname)));
-			for (ReefFish r : fish) {
+			PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(f)));
+			for (ReefFish r : Fish) {
 				pw.println(r);
 			}
 			pw.close();
@@ -23,14 +23,14 @@ public class FishWriter {
 		}
 	}
 	
-	public static boolean writeAssessmentsToJSON(String fname, 
-			ArrayList<ReefFish> fish) {
+	public static boolean writeAssessmentsToJSON(File f, 
+			ArrayList<ReefFish> Fish) {
 		try {
 			PrintWriter pw = new PrintWriter(new BufferedWriter(new 
-					FileWriter(fname)));
+					FileWriter(f)));
 			JSONObject rObj;
 			JSONArray array = new JSONArray();
-			for (ReefFish r : fish) {
+			for (ReefFish r : Fish) {
 				rObj = new JSONObject();
 				rObj.put("name,",r.getName());
 				array.add(rObj);

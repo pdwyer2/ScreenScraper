@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
+import java.awt.Dimension;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -35,15 +36,14 @@ class ReefFish {
 	}
 	@Override
 	public String toString() {
-		return String.format("%s", name);
+		return String.format("%s" + "\n", name);
 	}
 }
 
-public class UserInterface extends JFrame implements ActionListener {
+public class UserInterface extends JFrame {
 	private String textToShow;
 	private JTextArea txaWords;
 	private ArrayList<ReefFish> Fish;
-	
 	
 	public void setupMenu() {
 		JMenuBar mbar = new JMenuBar();
@@ -59,7 +59,7 @@ public class UserInterface extends JFrame implements ActionListener {
 		JMenuItem miInfo = new JMenuItem("Info");
 		miInfo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent o) {
-				JOptionPane.showMessageDialog(null,"Payton Dwyer");
+				JOptionPane.showMessageDialog(null,"Author: Payton Dwyer");
 				}
 			});
 		mnuHelp.add(miInfo);
@@ -68,8 +68,9 @@ public class UserInterface extends JFrame implements ActionListener {
 		setJMenuBar(mbar);
 	}
 	
-	public UserInterface(ArrayList<ReefFish> Fish) {
+	public UserInterface() {
 		setTitle("Web Scraper");
+		this.Fish = Fish;
 		setBounds(100,100,500,500);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		Container c = getContentPane();
@@ -77,31 +78,32 @@ public class UserInterface extends JFrame implements ActionListener {
 		JPanel panNorth = new JPanel(new FlowLayout());
 		JLabel label = new JLabel("Enter URL:");
 		JTextField UrlToFetch = new JTextField(30);
+		JTextArea txaWords = new JTextArea();
+		txaWords.setEditable(false);
 		JButton btnFetch = new JButton("Fetch");
 		btnFetch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String url = UrlToFetch.getText();
-				ArrayList<ReefFish> Fish = SiteScraper.Scraper(url);
-				textToShow = Fish.toString();
-			//	txaWords.setText(textToShow);
+				ArrayList<ReefFish> Fish = SiteScraper.Scraper(UrlToFetch.getText());
+				for (ReefFish r : Fish) {
+					textToShow = textToShow + r.toString();
+				}
+				txaWords.setText(textToShow);
 				System.out.print(textToShow);
 			}
 		});
-		panNorth.add(label);
-		panNorth.add(UrlToFetch);
-		panNorth.add(btnFetch);
-		c.add(panNorth,BorderLayout.NORTH);
 		JPanel panSouth = new JPanel(new FlowLayout());
 		JButton btnSaveToText = new JButton("Save to text");
 		btnSaveToText.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					JFileChooser jfc = new JFileChooser(new File("c:\\temp\\"));
+					JFileChooser jfc = new JFileChooser(new File("c:\\"));
 					if (jfc.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
+						if (FishWriter.writeFishToTextFile(jfc.getSelectedFile(),Fish)) {
 						JOptionPane.showMessageDialog(null, "List of Fish saved!");
-					} else {
+						} else {
 						JOptionPane.showMessageDialog(null, "List of Fish was not saved.");
 					}
+				}	
 				} catch (Exception ex) {
 					System.out.println("Could not save the file");
 				}
@@ -111,33 +113,34 @@ public class UserInterface extends JFrame implements ActionListener {
 		btnSaveToJson.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					JFileChooser jfc = new JFileChooser(new File("c:\\temp\\"));
+					JFileChooser jfc = new JFileChooser(new File("c:\\"));
 					if (jfc.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
+						if (FishWriter.writeAssessmentsToJSON(jfc.getSelectedFile(), Fish)) {
 						JOptionPane.showMessageDialog(null, "List of Fish saved to JSON!");
 					} else {
 						JOptionPane.showMessageDialog(null, "List of Fish was not saved.");
 					}
+				}	
 				} catch (Exception ex) {
 					System.out.println("Could not save the file");
 				}
 			}
 		});
+		panNorth.add(label);
+		panNorth.add(UrlToFetch);
+		panNorth.add(btnFetch);
+		c.add(panNorth,BorderLayout.NORTH);
 		panSouth.add(btnSaveToText);
 		panSouth.add(btnSaveToJson);
 		c.add(panSouth,BorderLayout.SOUTH);
-		JPanel panCenter = new JPanel(new FlowLayout());
-		JTextArea txaWords = new JTextArea();
-		txaWords.setEditable(false);
 		c.add(txaWords,BorderLayout.CENTER);
 		setupMenu();
 	}
 	
-	public void actionPerformed(ActionEvent o) {
-	}
 	
 	public static void main(String[] args) {
 		ArrayList<ReefFish> Fish = new ArrayList<ReefFish>();
-		UserInterface UI = new UserInterface(Fish);
+		UserInterface UI = new UserInterface();
 		UI.setVisible(true);
 			
 	}
