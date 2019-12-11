@@ -3,6 +3,13 @@ import java.io.*;
 import org.json.simple.*;
 
 public class FishWriter {
+	
+	public static void writeFishToScreen(ArrayList<ReefFish> fish) {
+		for (ReefFish a : fish) {
+			System.out.println(a);
+		}
+	}
+	
 	public static boolean writeFishToTextFile(String fname, ArrayList<ReefFish> fish) {
 		try {
 			PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(fname)));

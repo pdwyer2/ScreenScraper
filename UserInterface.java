@@ -2,6 +2,7 @@ import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.FlowLayout;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 
 import javax.swing.JButton;
@@ -15,9 +16,24 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
+
+
 public class UserInterface extends JFrame implements ActionListener {
-	private String textToShow;
+	private ArrayList<ReefFish> textToShow;
 	private JTextArea txaWords;
+	
+	//  public static String[] GetStringArray(ArrayList<ReefFish> Fish) 
+	 //   { 
+	//        String str[] = new String[Fish.size()]; 
+	//        ReefFish temp;
+	//        for (int j = 0; j < Fish.size(); j++) { 
+	//        temp = Fish.get(j);
+	//        
+	//        str[j] = 
+	//        } 
+	//  
+	//        return str; 
+	//    } 
 	
 	public void setupMenu() {
 		JMenuBar mbar = new JMenuBar();
@@ -54,10 +70,28 @@ public class UserInterface extends JFrame implements ActionListener {
 		JButton btnFetch = new JButton("Fetch");
 		panNorth.add(label);
 		panNorth.add(txtTextToAdd);
+		txtTextToAdd.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+			}
+		});
 		panNorth.add(btnFetch);
+		btnFetch.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String url = txtTextToAdd.getText();
+				ArrayList<ReefFish> Fish = SiteScraper.Scraper(url);
+				textToShow = Fish;
+			//	txaWords.setText((textToShow));
+			}
+		});
 		c.add(panNorth,BorderLayout.NORTH);
 		JPanel panSouth = new JPanel(new FlowLayout());
 		JButton btnSaveToText = new JButton("Save to text");
+		btnSaveToText.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+			}
+		});
 		JButton btnSaveToJson = new JButton("Save to json");
 		panSouth.add(btnSaveToText);
 		panSouth.add(btnSaveToJson);
