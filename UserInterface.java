@@ -20,6 +20,14 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
 
+/**
+ * This class models the data taken from the website.
+ * It includes private data, getters and setters, constructors both default and non default,
+ * and also a toString function.
+ * @author Payton Dwyer
+ *
+ */
+
 class ReefFish {
 	private String name;
 	public String getName() {
@@ -40,11 +48,23 @@ class ReefFish {
 	}
 }
 
+/**
+ * This class serves as the main model that for the User Interface.
+ * It has private data members and includes action listeners for components that rely on user interaction.  
+ * @author Payton Dwyer
+ *
+ */
+
 public class UserInterface extends JFrame {
 	private String textToShow;
 	private JTextArea txaWords;
 	private ArrayList<ReefFish> Fish;
 	
+	/**
+	 * This function sets up the menu bar at the top of the user interface.
+	 * It includes a File option with an exit option as well as a help option with a message about the author.
+	 * It responds to the user clicking the various options.
+	 */
 	public void setupMenu() {
 		JMenuBar mbar = new JMenuBar();
 		JMenu mnuFile = new JMenu("File");
@@ -68,6 +88,14 @@ public class UserInterface extends JFrame {
 		setJMenuBar(mbar);
 	}
 	
+	
+	/**
+	 * This function sets up the main part of the User Interface.
+	 * It sets a title and bounds for the User Interface. 
+	 * It includes action listeners for the various buttons that the user can use.
+	 * The fetch button links to the SiteScraper class to fetch the information from the site.
+	 * The file choosers are also included so the user can name the file they wish to export to.
+	 */
 	public UserInterface() {
 		setTitle("Web Scraper");
 		this.Fish = Fish;
@@ -137,6 +165,10 @@ public class UserInterface extends JFrame {
 		setupMenu();
 	}
 	
+	/**
+	 * Main body of the application that will launch the user interface and show it to the screen.
+	 * @param args
+	 */
 	
 	public static void main(String[] args) {
 		ArrayList<ReefFish> Fish = new ArrayList<ReefFish>();

@@ -2,6 +2,16 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import java.net.URL;
 
+/**
+ * This class grabs the data from the website and puts it into an array list.
+ * It uses a specific search of a set of characters to find the desired lines.
+ * It includes if else statements to weed out any unwanted material.
+ * It replaces unwanted quotes that come from the website's source.
+ * Finally it adds each fish to the result. 
+ * @author Payton Dwyer
+ *
+ */
+
 public class SiteScraper {
 	public static ArrayList<ReefFish> Scraper(String url) {
 		ArrayList<ReefFish> result = new ArrayList<ReefFish>();
